@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Attendance</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .event-info {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f1f3f5;
+        }
+
+        .present {
+            color: green;
+            font-weight: bold;
+        }
+
+        .absent {
+            color: red;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📋 Event Attendance</h1>
+
+    <div class="event-info">
+        <strong>{{ event.title }}</strong><br>
+        Date: {{ event.event_date }}<br>
+        Time: {{ event.start_time }} - {{ event.end_time }}<br>
+        Venue: {{ event.venue }}
+    </div>
+
+    {% if students_data %}
+
+    <table>
+
+        <tr>
+            <th>Student</th>
+            <th>RA Number</th>
+            <th>Attendance</th>
+            <th>Action</th>
+        </tr>
+
+        {% for item in students_data %}
+
+        <tr>
+
+            <td>
+                {{ item.student.user.name }}
+            </td>
+
+            <td>
+                {{ item.student.ra_number }}
+            </td>
+
+            <td>
+
+                {% if item.attendance %}
+
+                    {% if item.attendance.status == "PRESENT" %}
+                        <span class="present">PRESENT</span>
+                    {% else %}
+                        <span class="absent">ABSENT</span>
+                    {% endif %}
+
+                {% else %}
+
+                    <span>Not Marked</span>
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                <form method="POST"
+      action="/faculty/attendance/{{ event.id }}/{{ item.student.id }}">
+
+    <button type="submit">
+        Mark Present
+    </button>
+
+</form>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+        <p>No students are registered for this event.</p>
+
+    {% endif %}
+
+  <div style="margin-top: 25px;">
+
+    {% if event.status in ["APPROVED", "ONGOING"] %}
+
+    <form method="POST"
+          action="/faculty/event/{{ event.id }}/complete">
+
+        <button type="submit"
+                style="background: #16a34a;">
+            Complete Event
+        </button>
+
+    </form>
+
+    {% elif event.status == "COMPLETED" %}
+
+    <p style="color: green; font-weight: bold;">
+        ✓ Event Completed
+    </p>
+
+    <form method="POST"
+          action="/faculty/event/{{ event.id }}/generate-certificates">
+
+        <button type="submit"
+                style="background: #7c3aed; margin-top: 10px;">
+            🎓 Generate Certificates
+        </button>
+
+    </form>
+
+    {% endif %}
+
+    <a class="back" href="/dashboard">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</div>
+
+</body>
+</html>

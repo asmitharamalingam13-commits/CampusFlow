@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Certificates</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .certificate-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .certificate-card h2 {
+            margin-top: 0;
+        }
+
+        .certificate-id {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .download {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background: #7c3aed;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .download:hover {
+            background: #6d28d9;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .empty {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎓 My Certificates</h1>
+
+    {% if certificates_data %}
+
+        {% for item in certificates_data %}
+
+        <div class="certificate-card">
+
+            <h2>
+                {{ item.event.title }}
+            </h2>
+
+            <p>
+                Congratulations! You successfully participated
+                in this event.
+            </p>
+
+            <p class="certificate-id">
+                Certificate ID:
+                <strong>
+                    {{ item.certificate.certificate_id }}
+                </strong>
+            </p>
+
+            <p>
+                Issued on:
+                {{ item.certificate.issued_at }}
+            </p>
+
+            <a class="download"
+               href="/student/certificates/{{ item.certificate.id }}/download">
+
+                📄 Download Certificate
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <p>You don't have any certificates yet.</p>
+        </div>
+
+    {% endif %}
+
+    <a class="back" href="/dashboard">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

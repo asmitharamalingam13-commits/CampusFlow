@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusFlow | My OD Status</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+        }
+
+        .navbar {
+            background: #1f4e79;
+            color: white;
+            padding: 18px 35px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+            background: #357abd;
+            padding: 9px 16px;
+            border-radius: 7px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            color: #1f4e79;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header h3 {
+            margin: 0;
+            color: #222;
+        }
+
+        .status {
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .info {
+            margin-top: 18px;
+            line-height: 1.9;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .period-section {
+            margin-top: 22px;
+        }
+
+        .period-section h4 {
+            color: #1f4e79;
+            margin-bottom: 12px;
+        }
+
+        .period {
+            background: #f4f7fb;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 7px;
+
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .period-name {
+            font-weight: bold;
+        }
+
+        .period-time {
+            color: #666;
+        }
+
+        .reason {
+            margin-top: 18px;
+            padding: 12px;
+            background: #fff1f2;
+            border-left: 4px solid #dc2626;
+            border-radius: 5px;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 12px;
+            color: #666;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h1>CampusFlow</h1>
+
+        <a href="/dashboard" class="back">
+            Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+        <h2>My OD Status</h2>
+
+        <p class="subtitle">
+            Track your On-Duty requests and approval status.
+        </p>
+
+
+        {% if requests_data %}
+
+            {% for item in requests_data %}
+
+                <div class="card">
+
+                    <div class="header">
+
+                        <h3>
+                            {{ item.event.title }}
+                        </h3>
+
+                        {% if item.od.status == "PENDING" %}
+
+                            <span class="status pending">
+                                PENDING
+                            </span>
+
+                        {% elif item.od.status == "APPROVED" %}
+
+                            <span class="status approved">
+                                APPROVED
+                            </span>
+
+                        {% else %}
+
+                            <span class="status rejected">
+                                REJECTED
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <div>
+                            <span class="label">
+                                Event Date:
+                            </span>
+
+                            {{ item.event.event_date }}
+                        </div>
+
+                        <div>
+                            <span class="label">
+                                Time:
+                            </span>
+
+                            {{ item.event.start_time }}
+                            -
+                            {{ item.event.end_time }}
+                        </div>
+
+                        <div>
+                            <span class="label">
+                                Venue:
+                            </span>
+
+                            {{ item.event.venue }}
+                        </div>
+
+                        <div>
+                            <span class="label">
+                                Requested:
+                            </span>
+
+                            {{ item.od.requested_at }}
+                        </div>
+
+                    </div>
+
+
+                    {% if item.snapshots %}
+
+                        <div class="period-section">
+
+                            <h4>
+                                Affected Timetable Periods
+                            </h4>
+
+                            {% for period in item.snapshots %}
+
+                                <div class="period">
+
+                                    <span class="period-name">
+                                        ✓ {{ period.period_label }}
+                                    </span>
+
+                                    <span class="period-time">
+                                        {{ period.start_time }}
+                                        -
+                                        {{ period.end_time }}
+                                    </span>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if item.od.status == "REJECTED" %}
+
+                        <div class="reason">
+
+                            <span class="label">
+                                Rejection Reason:
+                            </span>
+
+                            {{ item.od.decision_reason }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+
+                <h3>No OD Requests Yet</h3>
+
+                <p>
+                    You have not submitted any On-Duty requests.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

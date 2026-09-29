@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Event Coordinator | Create Event</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+        }
+
+        .navbar {
+            background: #1f4e79;
+            color: white;
+            padding: 18px 30px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #1f4e79;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 11px;
+            margin-top: 7px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #1f4e79;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .message {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #1f4e79;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+        CampusFlow | Event Coordinator
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>📅 Create Club Event</h1>
+
+            <p>
+                Club:
+                <strong>{{ club.name }}</strong>
+            </p>
+
+            <p>
+                Role:
+                <strong>Event Coordinator</strong>
+            </p>
+
+            {% if message %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endif %}
+
+            <form method="POST">
+
+                <label>Event Title</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Example: AI Workshop"
+                    required
+                >
+
+                <label>Description</label>
+
+                <textarea
+                    name="description"
+                    placeholder="Describe the event"
+                ></textarea>
+
+                <label>Event Date</label>
+
+                <input
+                    type="date"
+                    name="event_date"
+                    required
+                >
+
+                <label>Start Time</label>
+
+                <input
+                    type="time"
+                    name="start_time"
+                    required
+                >
+
+                <label>End Time</label>
+
+                <input
+                    type="time"
+                    name="end_time"
+                    required
+                >
+
+                <label>Venue</label>
+
+                <input
+                    type="text"
+                    name="venue"
+                    placeholder="Example: SRM Seminar Hall"
+                    required
+                >
+
+                <label>Capacity</label>
+
+                <input
+                    type="number"
+                    name="capacity"
+                    min="1"
+                    placeholder="Example: 50"
+                    required
+                >
+
+                <button type="submit">
+                    Create Event
+                </button>
+
+            </form>
+
+            <br>
+
+            <a href="/club/event-coordinator/events/create">
+    📅 Create Club Event
+</a>
+
+<br><br>
+
+<a href="/dashboard">
+    ← Back to Dashboard
+</a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

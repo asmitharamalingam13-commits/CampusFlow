@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Event Registrations</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .event-info {
+            background: #eef4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f1f3f5;
+        }
+
+        .status {
+            color: green;
+            font-weight: bold;
+        }
+
+        .empty {
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 8px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>👥 Registered Students</h1>
+
+    <div class="event-info">
+
+        <h2>{{ event.title }}</h2>
+
+        <p>
+            <strong>Date:</strong>
+            {{ event.event_date }}
+        </p>
+
+        <p>
+            <strong>Time:</strong>
+            {{ event.start_time }} -
+            {{ event.end_time }}
+        </p>
+
+        <p>
+            <strong>Venue:</strong>
+            {{ event.venue }}
+        </p>
+
+        <p>
+            <strong>Capacity:</strong>
+            {{ event.capacity }}
+        </p>
+
+    </div>
+
+
+    {% if registered_students %}
+
+        <h3>
+            Total Registered:
+            {{ registered_students|length }}
+        </h3>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    <th>RA Number</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for student in registered_students %}
+
+                <tr>
+
+                    <td>
+                        {{ loop.index }}
+                    </td>
+
+                    <td>
+                        {{ student.name }}
+                    </td>
+
+                    <td>
+                        {{ student.ra_number }}
+                    </td>
+
+                    <td>
+                        {{ student.email }}
+                    </td>
+
+                    <td class="status">
+                        REGISTERED
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    {% else %}
+
+        <div class="empty">
+            No students have registered for this event yet.
+        </div>
+
+    {% endif %}
+
+
+    <br>
+
+    <a href="/faculty/events">
+        ← Back to Faculty Events
+    </a>
+
+</div>
+
+</body>
+</html>

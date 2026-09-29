@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Club Management - CampusFlow</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #1f2937;
+        }
+
+        .club-card {
+            background: white;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .club-card h2 {
+            margin-top: 0;
+            color: #2563eb;
+        }
+
+        .info {
+            margin: 8px 0;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .active {
+            color: green;
+        }
+
+        .inactive {
+            color: red;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .edit-btn {
+            display: inline-block;
+            margin-top: 15px;
+            margin-right: 8px;
+            padding: 10px 15px;
+            background: #f59e0b;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🏫 Club Management</h1>
+
+    <p>
+        Manage clubs, Club Admins and Faculty Coordinators.
+    </p>
+
+    <a href="/admin/clubs/create"
+       style="
+           display:inline-block;
+           padding:10px 16px;
+           background:#1f4e79;
+           color:white;
+           text-decoration:none;
+           border-radius:6px;
+           margin-bottom:20px;
+       ">
+        + Create New Club
+    </a>
+
+    {% if club_data %}
+
+        {% for item in club_data %}
+
+            <div class="club-card">
+
+                <h2>{{ item.club.name }}</h2>
+
+                <div class="info">
+                    <strong>Description:</strong>
+                    {{ item.club.description or "No description" }}
+                </div>
+
+                <div class="info">
+                    <strong>Club Admin:</strong>
+
+                    {% if item.club_admin %}
+                        {{ item.club_admin.email }}
+                    {% else %}
+                        Not Assigned
+                    {% endif %}
+
+                </div>
+
+                <div class="info">
+                    <strong>Faculty Coordinator:</strong>
+
+                    {% if item.faculty_coordinator %}
+                        {{ item.faculty_coordinator.email }}
+                    {% else %}
+                        Not Assigned
+                    {% endif %}
+
+                </div>
+
+                <div class="info">
+                    <strong>Status:</strong>
+
+                    {% if item.club.is_active %}
+                        <span class="status active">ACTIVE</span>
+                    {% else %}
+                        <span class="status inactive">ARCHIVED</span>
+                    {% endif %}
+                </div>
+
+                <!-- Edit Club -->
+                <a
+                    class="edit-btn"
+                    href="/admin/clubs/{{ item.club.id }}/edit"
+                >
+                    ✏️ Edit
+                </a>
+                {% if item.club.is_active %}
+
+    <form
+        method="POST"
+        action="/admin/clubs/{{ item.club.id }}/toggle-status"
+        style="display:inline;"
+    >
+        <button
+            type="submit"
+            style="
+                margin-top:15px;
+                padding:10px 15px;
+                background:#dc2626;
+                color:white;
+                border:none;
+                border-radius:6px;
+                cursor:pointer;
+            "
+        >
+            📦 Archive
+        </button>
+    </form>
+
+{% else %}
+
+    <form
+        method="POST"
+        action="/admin/clubs/{{ item.club.id }}/toggle-status"
+        style="display:inline;"
+    >
+        <button
+            type="submit"
+            style="
+                margin-top:15px;
+                padding:10px 15px;
+                background:#16a34a;
+                color:white;
+                border:none;
+                border-radius:6px;
+                cursor:pointer;
+            "
+        >
+            ✅ Activate
+        </button>
+    </form>
+
+{% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No clubs found.</p>
+
+    {% endif %}
+
+    <br>
+
+    <a class="btn" href="/dashboard">
+        ← Back to Dashboard
+    </a>
+
+</body>
+</html>

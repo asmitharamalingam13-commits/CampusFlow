@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CampusFlow Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .navbar {
+            background: #172554;
+            color: white;
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .logout {
+            color: white;
+            text-decoration: none;
+            background: #dc2626;
+            padding: 9px 15px;
+            border-radius: 6px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .welcome h1 {
+            margin-top: 0;
+        }
+
+        .role {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #1d4ed8;
+        }
+
+        .small {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .club-box {
+            background: #eff6ff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .green {
+            background: #16a34a;
+        }
+
+        .purple {
+            background: #7c3aed;
+        }
+
+        .orange {
+            background: #ea580c;
+        }
+
+        .gray {
+            background: #475569;
+        }
+
+        .status-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .status {
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: #f1f5f9;
+        }
+
+        .pending {
+            color: #b45309;
+        }
+
+        .approved {
+            color: #15803d;
+        }
+
+        .rejected {
+            color: #dc2626;
+        }
+
+        .footer {
+            text-align: center;
+            color: #777;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <h2>CampusFlow</h2>
+
+    <a class="logout" href="/logout">
+        Logout
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <div class="welcome">
+
+        <h1>
+            Welcome, {{ user.email }} 👋
+        </h1>
+
+        <p>
+            Campus Club Management Platform
+        </p>
+
+        <p>
+            Your role:
+            <span class="role">
+                {{ user.role }}
+            </span>
+        </p>
+
+    </div>
+
+
+    {% if user.role == "CLUB_ADMIN" %}
+
+    <!-- ============================= -->
+    <!-- CLUB ADMIN PORTAL -->
+    <!-- ============================= -->
+
+    <h2 class="section-title">
+        🔵 Club Administrator Portal
+    </h2>
+
+
+    <!-- MY CLUB -->
+
+    <div class="club-box">
+
+        <h2>🏫 My Club</h2>
+
+        {% if my_club %}
+
+            <h3>{{ my_club.name }}</h3>
+
+            <p>
+                <strong>Members:</strong>
+                {{ club_members_count }}
+            </p>
+
+            <div class="actions">
+
+                <a class="button" href="/club-admin/roles">
+                    🎭 Manage Dynamic Roles
+                </a>
+
+                <a class="button green"
+                   href="/club-admin/events/create">
+                    📅 Create Event
+                </a>
+
+            </div>
+
+        {% else %}
+
+            <p>
+                No club is currently assigned to this Club Admin.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- EVENT SUMMARY -->
+
+    <h2 class="section-title">
+        📅 Event Management
+    </h2>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Total Events</h3>
+
+            <div class="number">
+                {{ total_events }}
+            </div>
+
+            <p class="small">
+                Events created by your club
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Pending Approval</h3>
+
+            <div class="number pending">
+                {{ pending_events }}
+            </div>
+
+            <p class="small">
+                Waiting for Faculty approval
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Approved</h3>
+
+            <div class="number approved">
+                {{ approved_events }}
+            </div>
+
+            <p class="small">
+                Available for student registration
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Rejected</h3>
+
+            <div class="number rejected">
+                {{ rejected_events }}
+            </div>
+
+            <p class="small">
+                Not available to students
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="actions">
+
+        <a class="button green"
+           href="/club-admin/events/create">
+            ➕ Create New Event
+        </a>
+
+    </div>
+
+
+    <!-- REGISTRATIONS -->
+
+    <h2 class="section-title">
+        👥 Student Participation
+    </h2>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Registrations</h3>
+
+            <div class="number">
+                {{ total_registrations }}
+            </div>
+
+            <p class="small">
+                Students registered for club events
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Completed Events</h3>
+
+            <div class="number">
+                {{ completed_events }}
+            </div>
+
+            <p class="small">
+                Events completed by the club
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- OD -->
+
+    <h2 class="section-title">
+        📝 On-Duty Requests
+    </h2>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Total OD Requests</h3>
+
+            <div class="number">
+                {{ total_od_requests }}
+            </div>
+
+            <p class="small">
+                Students requesting On-Duty
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Pending</h3>
+
+            <div class="number pending">
+                {{ pending_od_requests }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Approved</h3>
+
+            <div class="number approved">
+                {{ approved_od_requests }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Rejected</h3>
+
+            <div class="number rejected">
+                {{ rejected_od_requests }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CERTIFICATES -->
+
+    <h2 class="section-title">
+        📜 Certificates & Badges
+    </h2>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Certificates Issued</h3>
+
+            <div class="number">
+                {{ total_certificates }}
+            </div>
+
+            <p class="small">
+                Certificates issued to students
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CLUB MANAGEMENT -->
+
+    <h2 class="section-title">
+        ⚙️ Club Management
+    </h2>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>🎭 Dynamic Roles</h3>
+
+            <p>
+                Create and assign roles such as President,
+                Vice President, Treasurer and Event Coordinator.
+            </p>
+
+            <a class="button purple"
+               href="/club-admin/roles">
+                Manage Roles
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>📅 Event Management</h3>
+
+            <p>
+                Create events and submit them for Faculty approval.
+            </p>
+
+            <a class="button orange"
+               href="/club-admin/events/create">
+                Manage Events
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>👨‍🏫 Faculty Coordination</h3>
+
+            <p>
+                Events are reviewed and approved by the
+                Faculty Coordinator.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <!-- EXISTING NON-CLUB-ADMIN PORTAL -->
+
+    <h2 class="section-title">
+        Your CampusFlow Portal
+    </h2>
+
+    <div class="card">
+
+        <p>
+            Your role-specific features are available
+            through your dashboard.
+        </p>
+
+        <div class="actions">
+
+            {% if user.role == "STUDENT" %}
+
+                <a class="button" href="/student/events">
+                    🎓 Browse Events
+                </a>
+
+                <a class="button purple" href="/student/od/status">
+                    📄 My OD Status
+                </a>
+
+                <a class="button green" href="/student/certificates">
+                    📜 My Certificates
+                </a>
+                <a href="/student/od"
+   style="
+       display:inline-block;
+       padding:10px 16px;
+       margin:6px;
+       background:#16a34a;
+       color:white;
+       text-decoration:none;
+       border-radius:6px;
+       font-weight:bold;
+   ">
+    📝 Apply for OD
+</a>
+
+<a href="/student/od/status"
+   style="
+       display:inline-block;
+       padding:10px 16px;
+       margin:6px;
+       background:#2563eb;
+       color:white;
+       text-decoration:none;
+       border-radius:6px;
+       font-weight:bold;
+   ">
+    📊 OD Status
+</a>
+
+  {% elif user.role == "FACULTY" %}
+
+    <a class="button" href="/faculty/events">
+        📅 Event Approvals
+    </a>
+
+    <a class="button" href="/faculty/notifications">
+        🔔 Notifications
+    </a>
+
+    <a class="button" href="/faculty/events">
+        📋 Event Attendance
+    </a>
+
+    <a class="button purple" href="/faculty/od">
+        📝 OD Requests
+    </a>
+
+{% endif %}
+
+<div class="footer">
+
+    CampusFlow © 2026
+
+</div>
+
+</div>
+{% endif %}
+</body>
+</html>

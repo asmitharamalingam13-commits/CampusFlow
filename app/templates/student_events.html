@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusFlow | Student Events</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+        }
+
+        .navbar {
+            background: #1f4e79;
+            color: white;
+            padding: 18px 35px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+        }
+
+        .container {
+            padding: 35px;
+        }
+
+        .event-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .event-card h2 {
+            color: #1f4e79;
+            margin-top: 0;
+        }
+
+        .details {
+            line-height: 1.9;
+            color: #555;
+        }
+
+        .status {
+            display: inline-block;
+
+            background: #dff5e3;
+            color: #218838;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+        }
+
+        button {
+            background: #1f4e79;
+            color: white;
+
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #163a5c;
+        }
+
+        .registered {
+            background: #28a745;
+            color: white;
+
+            display: inline-block;
+
+            padding: 11px 18px;
+
+            border-radius: 6px;
+        }
+
+        .empty {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+        }
+
+        .back {
+            display: inline-block;
+
+            margin-top: 20px;
+
+            text-decoration: none;
+
+            color: #1f4e79;
+
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="navbar">
+
+        <h1>CampusFlow</h1>
+
+        <span>🎓 Student Events</span>
+
+    </div>
+
+
+    <div class="container">
+
+        <h1>📅 Approved Events</h1>
+
+        <p>
+            Browse events approved by Faculty and register to participate.
+        </p>
+
+
+        {% if events %}
+
+            {% for event in events %}
+
+                <div class="event-card">
+
+                    <h2>
+                        {{ event.title }}
+                    </h2>
+
+
+                    <div class="details">
+
+                        <strong>Description:</strong>
+
+                        {{ event.description or "No description provided." }}
+
+                        <br>
+
+
+                        <strong>Date:</strong>
+
+                        {{ event.event_date }}
+
+                        <br>
+
+
+                        <strong>Time:</strong>
+
+                        {{ event.start_time }} -
+                        {{ event.end_time }}
+
+                        <br>
+
+
+                        <strong>Venue:</strong>
+
+                        {{ event.venue }}
+
+                        <br>
+
+
+                        <strong>Capacity:</strong>
+
+                        {{ event.capacity }}
+
+                        <br>
+
+
+                        <strong>Status:</strong>
+
+                        <span class="status">
+                            APPROVED
+                        </span>
+
+                    </div>
+
+
+                    <br>
+
+
+                    {% if event.id in registered_event_ids %}
+
+                        <span class="registered">
+                            ✅ Already Registered
+                        </span>
+
+                    {% else %}
+
+                        <form
+                            method="POST"
+                            action="/student/events/{{ event.id }}/register"
+                        >
+
+                            <button type="submit">
+                                Register for Event
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+
+                <h3>📭 No Approved Events</h3>
+
+                <p>
+                    There are currently no events available
+                    for student registration.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <a
+            href="/dashboard"
+            class="back"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+</body>
+
+</html>

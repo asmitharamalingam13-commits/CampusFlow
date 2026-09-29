@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Event | CampusFlow</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: #1f4e79;
+            color: white;
+            padding: 18px 30px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #1f4e79;
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 22px;
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1f4e79;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        CampusFlow | Edit Event
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>✏️ Edit Event</h1>
+
+            <p>
+                You have the
+                <strong>Manage Event</strong>
+                permission.
+            </p>
+
+            <form method="POST">
+
+                <label>Event Title</label>
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ event.title }}"
+                    required
+                >
+
+                <label>Description</label>
+                <textarea
+                    name="description"
+                    required
+                >{{ event.description }}</textarea>
+
+                <button type="submit">
+                    💾 Save Changes
+                </button>
+
+            </form>
+
+            <a
+                href="/student/manage-events"
+                class="back"
+            >
+                ← Back to Manage Events
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

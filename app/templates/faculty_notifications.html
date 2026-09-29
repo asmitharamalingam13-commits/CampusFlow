@@ -1,0 +1,157 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Notifications</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .notification {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .notification h3 {
+            margin-top: 0;
+            color: #2563eb;
+        }
+
+        .info {
+            color: #444;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .mark-present {
+            padding: 10px 18px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .mark-present:hover {
+            background: #15803d;
+        }
+
+        .empty {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            color: #666;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🔔 Faculty Notifications</h1>
+
+    <p class="subtitle">
+        Student event registrations requiring attendance verification.
+    </p>
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+        <div class="notification">
+
+            <h3>📢 New Event Registration</h3>
+
+            <div class="info">
+
+                <strong>Message:</strong>
+                {{ notification.message }}
+
+                <br>
+
+                <strong>Notification Time:</strong>
+                {{ notification.created_at }}
+
+            </div>
+
+            <form
+                method="POST"
+                action="/faculty/attendance/{{ notification.event_id }}/{{ notification.student_id }}"
+            >
+
+                <button
+                    type="submit"
+                    class="mark-present"
+                >
+                    ✅ Mark Present
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h3>📭 No Notifications</h3>
+
+            <p>
+                There are currently no student event registrations
+                waiting for attendance verification.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+    <a
+        class="back"
+        href="/dashboard"
+    >
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>
+```

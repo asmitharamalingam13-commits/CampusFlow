@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Role Permissions | CampusFlow</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .header {
+            background: #1e3a8a;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+        }
+
+        .header p {
+            margin: 5px 0;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .permission {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px;
+            margin: 8px 0;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .permission:hover {
+            background: #eef4ff;
+        }
+
+        .permission input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .permission-name {
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .permission-description {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+        .save-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="header">
+
+        <h1>🔐 Role Permission Management</h1>
+
+        <p>
+            <strong>Club:</strong>
+            {{ club.name }}
+        </p>
+
+        <p>
+            <strong>Role:</strong>
+            {{ role.name }}
+        </p>
+
+        {% if role.description %}
+        <p>
+            {{ role.description }}
+        </p>
+        {% endif %}
+
+    </div>
+
+
+    <!-- Permission Card -->
+
+    <div class="card">
+
+        <h2>🎯 Assign Permissions</h2>
+
+        <p>
+            Select the permissions that this role should have.
+        </p>
+
+
+        <form method="POST">
+
+            {% for permission, description in permissions.items() %}
+
+            <label class="permission">
+
+                <input
+                    type="checkbox"
+                    name="permissions"
+                    value="{{ permission }}"
+                    {% if permission in selected_permissions %}
+                        checked
+                    {% endif %}
+                >
+
+                <div>
+
+                    <div class="permission-name">
+                        {{ permission.replace("_", " ").title() }}
+                    </div>
+
+                    <div class="permission-description">
+                        {{ description }}
+                    </div>
+
+                </div>
+
+            </label>
+
+            {% endfor %}
+
+
+            <br>
+
+            <button
+                type="submit"
+                class="save-btn"
+            >
+                💾 Save Permissions
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <a
+        href="/club-admin/roles"
+        class="back-btn"
+    >
+        ← Back to Role Management
+    </a>
+
+</div>
+
+</body>
+</html>

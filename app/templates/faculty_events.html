@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Event Management</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #222;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        .event-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .event-card h3 {
+            margin-top: 0;
+        }
+
+        .details {
+            line-height: 1.8;
+        }
+
+        button,
+        .action-link {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .registrations {
+            background: #007bff;
+            color: white;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .empty {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .approved {
+            border-left: 6px solid #28a745;
+        }
+
+        .pending {
+            border-left: 6px solid #ffc107;
+        }
+
+        .status-approved {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .status-draft {
+            color: #d39e00;
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>ðŸ“… Faculty Event Management</h1>
+
+    <p>
+        Review club events before students are allowed to register.
+    </p>
+
+
+    <!-- ========================================= -->
+    <!-- PENDING EVENTS -->
+    <!-- ========================================= -->
+
+    <h2>â³ Pending Event Approvals</h2>
+
+    {% if events %}
+
+        {% for event in events %}
+
+        <div class="event-card pending">
+
+            <h3>{{ event.title }}</h3>
+
+            <div class="details">
+
+                <strong>Description:</strong>
+                {{ event.description or "No description provided." }}
+                <br>
+
+                <strong>Date:</strong>
+                {{ event.event_date }}
+                <br>
+
+                <strong>Time:</strong>
+                {{ event.start_time }} - {{ event.end_time }}
+                <br>
+
+                <strong>Venue:</strong>
+                {{ event.venue }}
+                <br>
+
+                <strong>Capacity:</strong>
+                {{ event.capacity }}
+                <br>
+
+                <strong>Status:</strong>
+
+                <span class="status-draft">
+                    {{ event.status }}
+                </span>
+
+            </div>
+
+            <hr>
+
+
+            <!-- APPROVE -->
+
+            <form
+                method="POST"
+                action="/faculty/events/{{ event.id }}/approve"
+                style="display:inline;"
+            >
+
+                <button
+                    type="submit"
+                    class="approve"
+                >
+                    âœ… Approve Event
+                </button>
+
+            </form>
+
+
+            <!-- REJECT -->
+
+            <form
+                method="POST"
+                action="/faculty/events/{{ event.id }}/reject"
+            >
+
+                <textarea
+                    name="rejection_reason"
+                    rows="3"
+                    placeholder="Enter rejection reason..."
+                    required
+                ></textarea>
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="reject"
+                >
+                    âŒ Reject Event
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h3>ðŸŽ‰ No Pending Events</h3>
+
+            <p>
+                There are currently no DRAFT events
+                waiting for approval.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- ========================================= -->
+    <!-- APPROVED EVENTS -->
+    <!-- ========================================= -->
+
+    <h2>âœ… Approved Events</h2>
+
+    {% if approved_events %}
+
+        {% for event in approved_events %}
+
+        <div class="event-card approved">
+
+            <h3>{{ event.title }}</h3>
+
+            <div class="details">
+
+                <strong>Description:</strong>
+                {{ event.description or "No description provided." }}
+                <br>
+
+                <strong>Date:</strong>
+                {{ event.event_date }}
+                <br>
+
+                <strong>Time:</strong>
+                {{ event.start_time }} - {{ event.end_time }}
+                <br>
+
+                <strong>Venue:</strong>
+                {{ event.venue }}
+                <br>
+
+                <strong>Capacity:</strong>
+                {{ event.capacity }}
+                <br>
+
+                <strong>Status:</strong>
+
+                <span class="status-approved">
+                    {{ event.status }}
+                </span>
+
+            </div>
+
+            <hr>
+
+            <!-- VIEW REGISTERED STUDENTS -->
+
+            <a
+                href="/faculty/events/{{ event.id }}/registrations"
+                class="action-link registrations"
+            >
+                ðŸ‘¥ View Registered Students
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h3>ðŸ“­ No Approved Events</h3>
+
+            <p>
+                No approved events are available yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <br>
+
+    <p>
+        <a href="/dashboard">
+            â† Back to Dashboard
+        </a>
+    </p>
+
+</body>
+</html>

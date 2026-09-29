@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Club - CampusFlow</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 40px;
+        }
+
+        .container {
+            width: 600px;
+            max-width: 90%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            color: #1f4e79;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 18px;
+            margin-bottom: 6px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: #1f4e79;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1f4e79;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>✏️ Edit Club</h1>
+
+    <form method="POST">
+
+        <label>Club Name</label>
+
+        <input
+            type="text"
+            name="name"
+            value="{{ club.name }}"
+            required
+        >
+
+
+        <label>Description</label>
+
+        <textarea name="description">{{ club.description or "" }}</textarea>
+
+
+        <label>Club Admin</label>
+
+        <select name="club_admin_id">
+
+            <option value="">
+                -- Select Club Admin --
+            </option>
+
+            {% for admin in club_admins %}
+
+                <option
+                    value="{{ admin.id }}"
+                    {% if club.club_admin_id == admin.id %}selected{% endif %}
+                >
+                    {{ admin.email }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <label>Faculty Coordinator</label>
+
+        <select name="faculty_coordinator_id">
+
+            <option value="">
+                -- Select Faculty Coordinator --
+            </option>
+
+            {% for faculty in faculty_coordinators %}
+
+                <option
+                    value="{{ faculty.id }}"
+                    {% if club.faculty_coordinator_id == faculty.id %}selected{% endif %}
+                >
+                    {{ faculty.email }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <button type="submit">
+            Save Changes
+        </button>
+
+    </form>
+
+    <a class="back" href="/admin/clubs">
+        ← Back to Club Management
+    </a>
+
+</div>
+
+</body>
+</html>

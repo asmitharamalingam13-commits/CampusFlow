@@ -1,0 +1,159 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CampusFlow - Apply OD</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        p {
+            color: #666;
+        }
+
+        label {
+            display: block;
+            margin-top: 25px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            background: #eef6ff;
+            border-radius: 6px;
+        }
+
+        .nav-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .nav-links a {
+            margin: 0 10px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student OD Application</h1>
+
+    <p>
+        Select an approved event to apply for On-Duty permission.
+    </p>
+
+    {% if message %}
+        <div class="message">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <!-- IMPORTANT: POST goes to the student OD route -->
+    <form method="POST" action="{{ url_for('main.student_od') }}">
+
+        <label for="event_id">
+            Select Event
+        </label>
+
+        <select name="event_id" id="event_id" required>
+
+            <option value="">
+                -- Select an Event --
+            </option>
+
+            {% for event in events %}
+
+                <option value="{{ event.id }}">
+                    {{ event.title }}
+                    | {{ event.event_date }}
+                    | {{ event.start_time }} - {{ event.end_time }}
+                    | {{ event.venue }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <button type="submit">
+            Apply for OD
+        </button>
+
+    </form>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('main.student_od_status') }}">
+            📊 View OD Status
+        </a>
+
+        |
+
+        <a href="/dashboard">
+            🏠 Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+```

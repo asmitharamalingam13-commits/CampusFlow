@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Event</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .club {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #fff3cd;
+            border-radius: 6px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📅 Create Event</h1>
+
+    <p class="club">
+        Club: <strong>{{ club.name }}</strong>
+    </p>
+
+    {% if message %}
+        <div class="message">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <form method="POST">
+
+        <label>Event Title</label>
+
+        <input
+            type="text"
+            name="title"
+            placeholder="Enter event title"
+            required
+        >
+
+        <label>Description</label>
+
+        <textarea
+            name="description"
+            placeholder="Describe the event..."
+        ></textarea>
+
+        <label>Event Date</label>
+
+        <input
+            type="date"
+            name="event_date"
+            required
+        >
+
+        <label>Start Time</label>
+
+        <input
+            type="time"
+            name="start_time"
+            required
+        >
+
+        <label>End Time</label>
+
+        <input
+            type="time"
+            name="end_time"
+            required
+        >
+
+        <label>Venue</label>
+
+        <input
+            type="text"
+            name="venue"
+            placeholder="Example: SRM Seminar Hall"
+            required
+        >
+
+        <label>Capacity</label>
+
+        <input
+            type="number"
+            name="capacity"
+            min="1"
+            placeholder="Example: 100"
+            required
+        >
+
+        <button type="submit">
+            Create Event
+        </button>
+
+    </form>
+
+    <div class="status">
+        <strong>Event Workflow</strong><br><br>
+
+        New event → <strong>DRAFT</strong><br>
+        Faculty approval → <strong>APPROVED</strong><br>
+        Student registration → <strong>OPEN</strong>
+    </div>
+
+    <a class="back" href="/dashboard">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

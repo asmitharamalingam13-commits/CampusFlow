@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Events | CampusFlow</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #1f4e79;
+            color: white;
+            padding: 18px 30px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .event {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .event h3 {
+            color: #1f4e79;
+            margin-top: 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 15px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #1f4e79;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+        CampusFlow | Student Event Management
+    </div>
+
+    <div class="container">
+
+        <div class="header">
+
+            <h1>🎯 Manage Events</h1>
+
+            <p>
+                <strong>Club:</strong>
+                {{ club.name }}
+            </p>
+
+            <p>
+                You have permission to manage events for this club.
+            </p>
+
+        </div>
+
+
+        {% if events %}
+
+            {% for event in events %}
+
+            <div class="event">
+
+                <h3>
+                    {{ event.title }}
+                </h3>
+
+                <p>
+                    {{ event.description }}
+                </p>
+
+                <p>
+                    📅 {{ event.event_date }}
+                </p>
+
+                <p>
+                    🕐 {{ event.start_time }} - {{ event.end_time }}
+                </p>
+
+                <p>
+                    📍 {{ event.venue }}
+                </p>
+
+                <p>
+                    Capacity: {{ event.capacity }}
+                </p>
+
+                <span class="status">
+                    {{ event.status }}
+                </span>
+                <div style="
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+">
+
+    <!-- EDIT EVENT -->
+    {% if can_manage_event %}
+
+    <a
+        href="/student/manage-events/{{ event.id }}/edit"
+        style="
+            display:inline-block;
+            padding:8px 14px;
+            margin:4px;
+            background:#2563eb;
+            color:white;
+            text-decoration:none;
+            border-radius:6px;
+        "
+    >
+        ✏️ Edit Event
+    </a>
+
+    {% endif %}
+
+
+    <!-- MANAGE VENUE -->
+    {% if can_manage_venue %}
+
+    <form
+        method="POST"
+        action="/student/manage-events/{{ event.id }}/venue"
+        style="display:inline-block; margin:4px;"
+    >
+
+        <input
+            type="text"
+            name="venue"
+            value="{{ event.venue }}"
+            placeholder="Enter venue"
+            style="
+                padding:8px;
+                border:1px solid #ccc;
+                border-radius:6px;
+            "
+        >
+
+        <button
+            type="submit"
+            style="
+                padding:8px 14px;
+                background:#16a34a;
+                color:white;
+                border:none;
+                border-radius:6px;
+                cursor:pointer;
+            "
+        >
+            📍 Update Venue
+        </button>
+
+    </form>
+
+    {% endif %}
+
+
+    <!-- MANAGE CAPACITY -->
+    {% if can_manage_capacity %}
+
+    <form
+        method="POST"
+        action="/student/manage-events/{{ event.id }}/capacity"
+        style="display:inline-block; margin:4px;"
+    >
+
+        <input
+            type="number"
+            name="capacity"
+            value="{{ event.capacity }}"
+            min="1"
+            style="
+                width:100px;
+                padding:8px;
+                border:1px solid #ccc;
+                border-radius:6px;
+            "
+        >
+
+        <button
+            type="submit"
+            style="
+                padding:8px 14px;
+                background:#7c3aed;
+                color:white;
+                border:none;
+                border-radius:6px;
+                cursor:pointer;
+            "
+        >
+            👥 Update Capacity
+        </button>
+
+    </form>
+
+    {% endif %}
+
+</div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>No events found.</p>
+
+        {% endif %}
+
+
+        <a
+            href="/dashboard"
+            class="back"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+
+</html>

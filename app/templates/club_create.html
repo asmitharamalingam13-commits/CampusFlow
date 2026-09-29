@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Club - CampusFlow</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            width: 600px;
+            max-width: 90%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            color: #1f4e79;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 18px;
+            margin-bottom: 6px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: #1f4e79;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #163a5c;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1f4e79;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🏫 Create New Club</h1>
+
+    <form method="POST">
+
+        <label for="name">Club Name</label>
+
+        <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Enter club name"
+            required
+        >
+
+
+        <label for="description">Description</label>
+
+        <textarea
+            id="description"
+            name="description"
+            placeholder="Enter club description"
+        ></textarea>
+
+
+        <label for="club_admin_id">Club Admin</label>
+
+        <select id="club_admin_id" name="club_admin_id">
+
+            <option value="">
+                -- Select Club Admin --
+            </option>
+
+            {% for admin in club_admins %}
+
+                <option value="{{ admin.id }}">
+                    {{ admin.email }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <label for="faculty_coordinator_id">
+            Faculty Coordinator
+        </label>
+
+        <select
+            id="faculty_coordinator_id"
+            name="faculty_coordinator_id"
+        >
+
+            <option value="">
+                -- Select Faculty Coordinator --
+            </option>
+
+            {% for faculty in faculty_coordinators %}
+
+                <option value="{{ faculty.id }}">
+                    {{ faculty.email }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <button type="submit">
+            Create Club
+        </button>
+
+    </form>
+
+
+    <a class="back" href="/admin/clubs">
+        ← Back to Club Management
+    </a>
+
+</div>
+
+</body>
+</html>
